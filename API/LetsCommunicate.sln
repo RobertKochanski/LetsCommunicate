@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsCommunicate.API", "LetsCommunicate\LetsCommunicate.API.csproj", "{74D18D57-B280-4056-A590-0FBE356CFF20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsCommunicate.API", "LetsCommunicate.API\LetsCommunicate.API.csproj", "{74D18D57-B280-4056-A590-0FBE356CFF20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsCommunicate.Domain", "LetsCommunicate.Domain\LetsCommunicate.Domain.csproj", "{CF1694F5-06A6-4956-8D1C-E8A2DC6EDE99}"
 EndProject

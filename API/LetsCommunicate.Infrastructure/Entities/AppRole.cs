@@ -2,9 +2,8 @@
 
 namespace LetsCommunicate.Infrastructure.Entities
 {
-    public class AppUser : IdentityUser<Guid>
+    public class AppRole : IdentityRole<Guid>
     {
-
         public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

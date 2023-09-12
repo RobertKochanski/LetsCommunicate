@@ -4,6 +4,7 @@ using LetsCommunicate.Infrastructure.Entities;
 using LetsCommunicate.Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace LetsCommunicate.Domain.Commands
 {
@@ -19,11 +20,13 @@ namespace LetsCommunicate.Domain.Commands
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly ILogger<RegisterCommandHandler> _logger;
 
-        public RegisterCommandHandler(UserManager<AppUser> userManager, ITokenService tokenService)
+        public RegisterCommandHandler(UserManager<AppUser> userManager, ITokenService tokenService, ILogger<RegisterCommandHandler> logger)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         public async Task<Result<UserResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -32,7 +35,8 @@ namespace LetsCommunicate.Domain.Commands
 
             if (user != null)
             {
-                Result.BadRequest<UserResponse>("User with this email already exist");
+                _logger.LogError($"[{DateTime.Now}] User with this email already exist");
+                return Result.BadRequest<UserResponse>("User with this email already exist");
             }
 
             List<string> errorList = new List<string>();
@@ -60,6 +64,10 @@ namespace LetsCommunicate.Domain.Commands
 
             if (errorList.Count > 0)
             {
+                foreach (var error in errorList)
+                {
+                    _logger.LogError($"[{DateTime.Now}] {error}");
+                }
                 return Result.BadRequest<UserResponse>(errorList);
             }
 
@@ -74,6 +82,7 @@ namespace LetsCommunicate.Domain.Commands
 
             if (!createResult.Succeeded)
             {
+                _logger.LogError(string.Join(" ", $"[{DateTime.Now}]" + createResult.Errors.Select(x => x.Description)));
                 return Result.BadRequest<UserResponse>(createResult.Errors.Select(x => x.Description).ToList());
             }
 
@@ -81,8 +90,9 @@ namespace LetsCommunicate.Domain.Commands
 
             if (!roleResult.Succeeded) 
             {
+                _logger.LogError(string.Join(" ", $"[{DateTime.Now}]" + roleResult.Errors.Select(x => x.Description)));
                 return Result.BadRequest<UserResponse>(roleResult.Errors.Select(x => x.Description).ToList());
-            } 
+            }
 
             UserResponse userResponse = new UserResponse()
             {

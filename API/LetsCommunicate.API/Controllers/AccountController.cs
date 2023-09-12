@@ -2,6 +2,7 @@
 using LetsCommunicate.Domain.Commands;
 using LetsCommunicate.Domain.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LetsCommunicate.API.Controllers
@@ -23,6 +24,13 @@ namespace LetsCommunicate.API.Controllers
             return await _mediator.Send(command).Process();
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginCommand command)
+        {
+            return await _mediator.Send(command).Process();
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {

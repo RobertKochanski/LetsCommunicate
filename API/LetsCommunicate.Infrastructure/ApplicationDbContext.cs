@@ -12,6 +12,9 @@ namespace LetsCommunicate.Infrastructure
         {
         }
 
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Group> Groups { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -27,7 +30,6 @@ namespace LetsCommunicate.Infrastructure
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
-
         }
     }
 }

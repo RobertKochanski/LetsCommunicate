@@ -1,0 +1,39 @@
+<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+    <h2 class="text-center text-info" style="font-size: 48px;">Register</h2>
+    <hr>
+    <div class="form-group">
+        <input type="text" class="form-control" name="username" [(ngModel)]="model.username" placeholder="Username">
+    </div>
+    <div class="form-group mt-2">
+        <input type="email" class="form-control" name="email" [(ngModel)]="model.email" placeholder="Email">
+    </div>
+    <div class="form-group mt-2">
+        <input type="password" class="form-control" name="password" [(ngModel)]="model.password" placeholder="Password">
+    </div>
+    <div class="form-group mt-2">
+        <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="model.passwordConfirm" placeholder="Confirm password">
+    </div>
+    <div class="form-group text-center">
+        <button class="btn btn-success mt-2 me-4" style="width: 35%;" type="submit">Register</button>
+        <button class="btn btn-secondary mt-2 ms-4" style="width: 25%;" (click)="cancel()" type="button">Cancel</button>
+    </div>
+
+    <div class="row mt-3" *ngIf="validationErrors.length === 0">
+        <h4 class="text-info"> INFO:</h4>
+        <ul class="text-danger">
+            <li>Passwords must be at least 6 characters.</li>
+            <li>Must have at least one non alphanumeric character.</li>
+            <li>Passwords must have at least one digit ('0'-'9').</li>
+            <li>Passwords must have at least one uppercase ('A'-'Z').</li>
+            
+        </ul>
+    </div>
+
+    <div class="row mt-3" *ngIf="validationErrors.length > 0">
+        <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+                {{error}}
+            </li>
+        </ul>
+    </div>
+</form>

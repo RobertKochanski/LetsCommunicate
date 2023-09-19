@@ -11,11 +11,33 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
+import { NgParticlesModule } from "ng-particles";
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { RegisterComponent } from './home/register/register.component';
+import { ForgotPasswordComponent } from './home/forgot-password/forgot-password.component';
+import { MainChatComponent } from './main-chat/main-chat.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { NavComponent } from './nav/nav.component';
+import { FriendsComponent } from './friends/friends.component';
+import { InvitationsComponent } from './invitations/invitations.component';
+import { ProfileComponent } from './profile/profile.component';
+import { EditComponent } from './profile/edit/edit.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
+    MainChatComponent,
+    NavComponent,
+    FriendsComponent,
+    InvitationsComponent,
+    ProfileComponent,
+    EditComponent,
   ],
   imports: [
     CommonModule,
@@ -26,7 +48,11 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
+    NgParticlesModule,
+    BsDropdownModule.forRoot(),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from './_models/user';
 import { AccountService } from './_services/account.service';
+import { ClickMode, HoverMode, MoveDirection, OutMode, Container, Engine } from 'tsparticles-engine';
+import { loadSlim } from 'tsparticles-slim';
+import { UserData } from './_models/userData';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,6 @@ import { AccountService } from './_services/account.service';
 })
 export class AppComponent implements OnInit {
   title = 'Lets Communicate';
-  users: any;
 
   constructor(private accountService: AccountService){}
 
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
   }
 
   setCurrentUser(){
-    const user: User = JSON.parse(localStorage.getItem('user')!);
+    const user: UserData = JSON.parse(localStorage.getItem('user')!);
     this.accountService.setCurrentUser(user);
   }
 }

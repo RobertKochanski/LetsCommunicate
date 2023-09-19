@@ -2,22 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ReplaySubject, map } from 'rxjs';
-import { User } from '../_models/user';
+import { UserResponse } from '../_models/userResponse';
+import { UserData } from '../_models/userData';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   apiURL = environment.apiURL;
-  private currentUserSource = new ReplaySubject<User>(1);
+  private currentUserSource = new ReplaySubject<UserData>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
   login(model: any){
-    return this.http.post<User>(this.apiURL + 'account/login', model).pipe(
-      map((response: User) => {
-        const user = response;
+    return this.http.post(this.apiURL + 'account/login', model).pipe(
+      map((response: UserResponse) => {
+        debugger
+        const user = response.data;
         if(user){
           this.setCurrentUser(user);
         }
@@ -26,16 +28,14 @@ export class AccountService {
   }
 
   register(model: any){
-    return this.http.post<User>(this.apiURL + 'account/register', model).pipe(
-      map((user: User) => {
-        if(user){
-          this.setCurrentUser(user);
-        }
+    return this.http.post<UserResponse>(this.apiURL + 'account/register', model).pipe(
+      map((user: UserResponse) => {
+        
       })
     )
   }
 
-  setCurrentUser(user: User){
+  setCurrentUser(user: UserData){
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
@@ -46,11 +46,11 @@ export class AccountService {
   }
 
   currentUser(){
-    let currentUser: User;
+    let currentUser: UserData;
 
     if(localStorage.getItem('user') == null){
       currentUser = {
-        username: null,
+        userName: null,
         email: null,
         token: null 
       }

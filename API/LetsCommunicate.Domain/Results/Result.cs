@@ -133,6 +133,28 @@ namespace LetsCommunicate.Domain.Results
             return result;
         }
 
+        public static Result NoContent()
+        {
+            var result = new Result
+            {
+                CodeResult = ResultCode.NoContent,
+                Code = 204
+            };
+
+            return result;
+        }
+
+        public static Result<T> NoContent<T>()
+        {
+            var result = new Result<T>
+            {
+                CodeResult = ResultCode.NoContent,
+                Code = 204
+            };
+
+            return result;
+        }
+
     }
     public class Result<T> : Result
     {
@@ -144,6 +166,7 @@ namespace LetsCommunicate.Domain.Results
         Ok,
         BadRequest,
         NotFound,
-        Forbidden
+        Forbidden,
+        NoContent
     }
 }

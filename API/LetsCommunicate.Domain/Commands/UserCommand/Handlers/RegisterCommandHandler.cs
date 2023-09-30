@@ -1,30 +1,26 @@
 ﻿using LetsCommunicate.Domain.Authentication;
 using LetsCommunicate.Domain.Results;
+using LetsCommunicate.Infrastructure;
 using LetsCommunicate.Infrastructure.Entities;
 using LetsCommunicate.Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace LetsCommunicate.Domain.Commands
+namespace LetsCommunicate.Domain.Commands.UserCommand.Handlers
 {
-    public class RegisterCommand : IRequest<Result<UserResponse>>
-    {
-        public string userName { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
-        public string passwordConfirm { get; set; }
-    }
-
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<UserResponse>>
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ApplicationDbContext _dbContext;
         private readonly ITokenService _tokenService;
         private readonly ILogger<RegisterCommandHandler> _logger;
 
-        public RegisterCommandHandler(UserManager<AppUser> userManager, ITokenService tokenService, ILogger<RegisterCommandHandler> logger)
+        public RegisterCommandHandler(UserManager<AppUser> userManager, ApplicationDbContext dbContext, ITokenService tokenService, ILogger<RegisterCommandHandler> logger)
         {
             _userManager = userManager;
+            _dbContext = dbContext;
             _tokenService = tokenService;
             _logger = logger;
         }
@@ -88,11 +84,23 @@ namespace LetsCommunicate.Domain.Commands
 
             var roleResult = await _userManager.AddToRoleAsync(appUser, "Member");
 
-            if (!roleResult.Succeeded) 
+            if (!roleResult.Succeeded)
             {
                 _logger.LogError(string.Join(" ", $"[{DateTime.Now}]" + roleResult.Errors.Select(x => x.Description)));
                 return Result.BadRequest<UserResponse>(roleResult.Errors.Select(x => x.Description).ToList());
             }
+
+            var group = await _dbContext.Groups.FirstOrDefaultAsync(x => x.Name == "General");
+
+            if (group == null)
+            {
+                _logger.LogError($"[{DateTime.Now}] Can not find group");
+                return Result.BadRequest<UserResponse>("Can not find group");
+            }
+
+            group.AppUsers.Add(await _userManager.FindByEmailAsync(appUser.Email));
+
+            await _dbContext.SaveChangesAsync();
 
             UserResponse userResponse = new UserResponse()
             {

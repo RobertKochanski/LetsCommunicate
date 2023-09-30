@@ -4,11 +4,11 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
-import { MainChatComponent } from './main-chat/main-chat.component';
 import { FriendsComponent } from './friends/friends.component';
 import { InvitationsComponent } from './invitations/invitations.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditComponent } from './profile/edit/edit.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -17,7 +17,9 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      {path: 'main-chat', component: MainChatComponent},
+      {path: 'chat', component: ChatComponent},
+      {path: 'chat/:id', component: ChatComponent},
+
       {path: 'friends', component: FriendsComponent},
       {path: 'invitations', component: InvitationsComponent},
       {path: 'profile', component: ProfileComponent},

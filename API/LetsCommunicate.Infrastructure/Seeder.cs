@@ -8,11 +8,13 @@ namespace LetsCommunicate.Infrastructure
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly ApplicationDbContext _dbContext;
 
-        public Seeder(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public Seeder(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _dbContext = dbContext;
         }
 
         public async Task SeedRoles()
@@ -38,6 +40,16 @@ namespace LetsCommunicate.Infrastructure
 
             await _userManager.CreateAsync(admin, "zaq1@WSX");
             await _userManager.AddToRoleAsync(admin, "Admin");
+
+            var group = new Group
+            {
+                Name = "General",
+                OwnerEmail = admin.Email,
+            };
+            group.AppUsers.Add(await _userManager.FindByEmailAsync(admin.Email));
+
+            await _dbContext.Groups.AddAsync(group);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -18,7 +18,6 @@ export class AccountService {
   login(model: any){
     return this.http.post(this.apiURL + 'account/login', model).pipe(
       map((response: UserResponse) => {
-        debugger
         const user = response.data;
         if(user){
           this.setCurrentUser(user);
@@ -50,6 +49,7 @@ export class AccountService {
 
     if(localStorage.getItem('user') == null){
       currentUser = {
+        id: null,
         userName: null,
         email: null,
         token: null 

@@ -1,5 +1,5 @@
 ﻿using LetsCommunicate.API.Extensions;
-using LetsCommunicate.Domain.Commands;
+using LetsCommunicate.Domain.Commands.UserCommand;
 using LetsCommunicate.Domain.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +34,13 @@ namespace LetsCommunicate.API.Controllers
         {
             var query = new GetAllUsersQuery();
             return await _mediator.Send(query).Process();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync()
+        {
+            var commnad = new DeleteUserCommand(User.GetUserGuid());
+            return await _mediator.Send(commnad).Process();
         }
     }
 }

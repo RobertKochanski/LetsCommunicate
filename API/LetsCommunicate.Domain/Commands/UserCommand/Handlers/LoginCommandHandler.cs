@@ -6,14 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace LetsCommunicate.Domain.Commands
+namespace LetsCommunicate.Domain.Commands.UserCommand.Handlers
 {
-    public class LoginCommand : IRequest<Result<UserResponse>>
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-
     public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<UserResponse>>
     {
         private readonly UserManager<AppUser> _userManager;
@@ -43,7 +37,7 @@ namespace LetsCommunicate.Domain.Commands
                 return Result.BadRequest<UserResponse>("Wrong email or password");
             }
 
-            if(!await _userManager.CheckPasswordAsync(user, request.Password))
+            if (!await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 _logger.LogError($"[{DateTime.UtcNow}] Wrong email or password");
                 return Result.BadRequest<UserResponse>("Wrong email or password");
@@ -51,6 +45,7 @@ namespace LetsCommunicate.Domain.Commands
 
             var response = new UserResponse()
             {
+                Id = user.Id,
                 Email = user.Email,
                 UserName = user.UserName,
                 Token = await _tokenService.CreateToken(user),

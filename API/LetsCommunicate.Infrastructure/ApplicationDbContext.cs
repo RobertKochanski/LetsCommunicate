@@ -14,6 +14,7 @@ namespace LetsCommunicate.Infrastructure
 
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

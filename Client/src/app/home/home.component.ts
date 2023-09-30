@@ -22,15 +22,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login(){
-    this.accountService.login(this.model).subscribe(response => {
-      this.toastr.info("Logged in");
-      this.router.navigateByUrl('/main-chat');
-    }, error => {
-      this.validationErrors = error;
-    });
-  }
-
   remindPassword(){
     // To Do
   }
@@ -121,7 +112,6 @@ export class HomeComponent implements OnInit {
   };
 
   particlesLoaded(container: Container): void {
-      console.log(container);
   }
 
   async particlesInit(engine: Engine): Promise<void> {

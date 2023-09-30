@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
   login(){
     this.accountService.login(this.model).subscribe(response => {
       this.toastr.info("Logged in");
-      this.router.navigateByUrl('/main-chat');
+      this.router.navigateByUrl('/chat');
     }, error => {
       this.toastr.error(error);
     });

@@ -22,6 +22,21 @@ namespace LetsCommunicate.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("AppUserGroup", b =>
+                {
+                    b.Property<Guid>("AppUsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GroupsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppUsersId", "GroupsId");
+
+                    b.HasIndex("GroupsId");
+
+                    b.ToTable("AppUserGroup");
+                });
+
             modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -141,9 +156,40 @@ namespace LetsCommunicate.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnerEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Invitation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("InvitedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InvitedEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Invitations");
                 });
 
             modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Message", b =>
@@ -262,6 +308,21 @@ namespace LetsCommunicate.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppUserGroup", b =>
+                {
+                    b.HasOne("LetsCommunicate.Infrastructure.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("AppUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LetsCommunicate.Infrastructure.Entities.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.AppUserRole", b =>
                 {
                     b.HasOne("LetsCommunicate.Infrastructure.Entities.AppRole", "Role")
@@ -281,10 +342,21 @@ namespace LetsCommunicate.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Message", b =>
+            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Invitation", b =>
                 {
                     b.HasOne("LetsCommunicate.Infrastructure.Entities.Group", "Group")
                         .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Message", b =>
+                {
+                    b.HasOne("LetsCommunicate.Infrastructure.Entities.Group", "Group")
+                        .WithMany("Messages")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -344,6 +416,11 @@ namespace LetsCommunicate.Infrastructure.Migrations
             modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.AppUser", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Group", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

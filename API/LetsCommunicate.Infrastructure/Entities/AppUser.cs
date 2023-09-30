@@ -6,5 +6,7 @@ namespace LetsCommunicate.Infrastructure.Entities
     {
 
         public ICollection<AppUserRole> UserRoles { get; set; }
+
+        public ICollection<Group> Groups { get; set; }
     }
 }

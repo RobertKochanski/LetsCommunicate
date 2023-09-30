@@ -13,11 +13,13 @@ namespace LetsCommunicate.API.Extensions
                 case ResultCode.Ok:
                     return new OkObjectResult(result);
                 case ResultCode.BadRequest:
-                    return new BadRequestObjectResult(result);
+                    return new BadRequestObjectResult(result) { StatusCode = result.Code };
                 case ResultCode.NotFound:
-                    return new NotFoundObjectResult(result);
+                    return new NotFoundObjectResult(result) { StatusCode = result.Code };
                 case ResultCode.Forbidden:
                     return new ObjectResult(result) { StatusCode = result.Code };
+                case ResultCode.NoContent:
+                    return new NoContentResult();
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -31,11 +33,13 @@ namespace LetsCommunicate.API.Extensions
                 case ResultCode.Ok:
                     return new OkObjectResult(result);
                 case ResultCode.BadRequest:
-                    return new BadRequestObjectResult(result);
+                    return new BadRequestObjectResult(result) { StatusCode = result.Code };
                 case ResultCode.NotFound:
-                    return new NotFoundObjectResult(result);
+                    return new NotFoundObjectResult(result) { StatusCode = result.Code };
                 case ResultCode.Forbidden:
                     return new ObjectResult(result) { StatusCode = result.Code };
+                case ResultCode.NoContent:
+                    return new NoContentResult();
                 default:
                     throw new ArgumentOutOfRangeException();
             }

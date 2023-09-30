@@ -14,9 +14,9 @@ The application itself has a task to imitate something like lite version of Slac
 Creation according to the CQRS pattern - Command and Query Responsibility Segregation, a pattern that separates read (query) and update (command) operations for a data store.
 
 ### Backend application based by three layers architecture
-- Presentation Layer
-- Business Logic Layer
-- Data Access Layer
+- API (Presentation Layer)
+- Domain (Business Logic Layer)
+- Infrastructure (Data Access Layer)
 
 ## Frontend - used tehcnologies
 

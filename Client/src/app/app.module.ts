@@ -24,6 +24,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { EditComponent } from './profile/edit/edit.component'
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { ChatComponent } from './chat/chat.component';
+import { MembersComponent } from './chat/members/members.component';
+import { GroupsComponent } from './chat/groups/groups.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { ChatComponent } from './chat/chat.component';
     ProfileComponent,
     EditComponent,
     ChatComponent,
+    MembersComponent,
+    GroupsComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,51 @@
+<div class="container-fluid p-0 m-0 row">
+    <div class="col-2 border border-1 border-primary">
+        <app-groups></app-groups>
+    </div>
+
+    <div class="col-10 border border-1 border-primary">
+        <div class="d-flex align-items-center flex-column" style="margin-top: 2%;">
+            <h2>Member list:</h2>
+
+            <table class="table table-primary table-striped text-center align-middle" style="width: 100vh;">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Permission</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let member of members; let i = index">
+                        <th>{{i + 1}}</th>
+                        
+                        <th *ngIf="member.email === group.ownerEmail">{{member.userName}} <fa-icon [icon]="faStar"></fa-icon> </th>
+                        <th *ngIf="member.email !== group.ownerEmail">{{member.userName}}</th>
+
+                        <td *ngIf="member.email === user.email">{{member.email}} <span class="text-success">(You)</span></td>
+                        <td *ngIf="member.email !== user.email">{{member.email}}</td>
+
+                        <td *ngIf="group.permissionEmails.includes(user.email)">
+                            <input *ngIf="group.permissionEmails.includes(member.email) && group.ownerEmail !== member.email && user.email === group.ownerEmail" type="checkbox" checked (change)="permissionChange($event, member.email)">
+                            <input *ngIf="!group.permissionEmails.includes(member.email) && user.email !== member.email" type="checkbox" (change)="permissionChange($event, member.email)">
+                            <input *ngIf="group.permissionEmails.includes(member.email) && (user.email === member.email || group.ownerEmail === member.email)" type="checkbox" checked disabled>
+                        </td>
+                        <td *ngIf="!group.permissionEmails.includes(user.email)">
+                            <input *ngIf="group.permissionEmails.includes(member.email)" type="checkbox" checked disabled>
+                            <input *ngIf="!group.permissionEmails.includes(member.email)" type="checkbox" disabled>
+                        </td>
+
+                        <td>
+                            <span *ngIf="member.email === group.ownerEmail && user.email !== group.ownerEmail"> You can not do anything to owner</span>
+                            <button *ngIf="member.email === user.email && user.email !== group.ownerEmail" class="btn btn-outline-secondary m-1">Leave</button>
+                            <button *ngIf="group.permissionEmails.includes(user.email) && member.email !== group.ownerEmail && member.email !== user.email" class="btn btn-outline-danger m-1">Kick</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>

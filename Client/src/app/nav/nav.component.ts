@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-nav',
@@ -16,8 +17,9 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login(){
+  login(ngForm: NgForm){
     this.accountService.login(this.model).subscribe(response => {
+      ngForm.reset();
       this.toastr.info("Logged in");
       this.router.navigateByUrl('/chat');
     }, error => {

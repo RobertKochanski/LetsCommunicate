@@ -11,3 +11,28 @@ textarea {
     display: block;
     opacity: 1;
 }
+
+.hideScroll::-webkit-scrollbar{
+    display: none;
+}
+
+.hideScroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+width: 10px;
+}
+
+::-webkit-scrollbar-track {
+background: #b9b9b9; 
+}
+
+::-webkit-scrollbar-thumb {
+background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #555; 
+}

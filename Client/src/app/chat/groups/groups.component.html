@@ -1,0 +1,33 @@
+<h4 *ngIf="!createGroupMode" class="text-center m-2">Groups <fa-icon (click)="groupToggle()" [icon]="faPlus"></fa-icon></h4>
+
+<!-- Create Group Form -->
+<div class="text-center m-2" *ngIf="createGroupMode">
+    <form #createGroupForm="ngForm" (ngSubmit)="createGroup(createGroupForm)" autocomplete="off">
+        <h4 class="border border-1 border-primary mt-5 p-3">Create new group</h4>
+        <label for="groupName" class="form-label m-0 pt-1">Group Name</label>
+        <input type="text" class="form-control" id="groupName" name="name" [(ngModel)]="groupModel.name" placeholder="Name">
+
+        <button type="submit" class="btn btn-primary mt-2">Create</button>
+        <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="groupToggle()">Return</button>
+    </form>
+</div>
+
+<!-- Group Section -->
+<div class="list-group p-1" *ngIf="!createGroupMode">
+    <div class="row d-flex show" *ngFor="let group of groups">
+        <div class="d-flex list-group-item list-group-item-action rounded-2 p-0 my-1 mx-0" routerLinkActive="active">
+            <span class="col-10 d-flex justify-content-start rounded-2" style="padding-left: 5%; margin-top: 5px;" routerLink="/chat/{{group.id}}">{{group.name}}</span>
+            <div class="col-2 d-flex justify-content-end align-items-center hide ms-auto">
+                <button class="btn btn-primary btn rounded-4 me-1" routerLink="/chat/{{group.id}}/members">
+                    <fa-icon [icon]="faUsers" size="sm"></fa-icon>
+                </button>
+                <button *ngIf="user.email !== group.ownerEmail" class="btn btn-primary btn rounded-4 me-1" (click)="leaveGroup()">
+                    <fa-icon [icon]="faUserLeave" size="sm" style="color: orange;"></fa-icon>
+                </button>
+                <button *ngIf="group.name !== 'General'" class="btn btn-primary btn rounded-4 me-1" (click)="deleteGroup(group)">
+                    <fa-icon [icon]="faTrash" size="sm" style="color: red;"></fa-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

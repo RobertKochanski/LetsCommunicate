@@ -8,4 +8,5 @@ export interface GroupData{
     ownerEmail: string;
     users: UserData[];
     messages: MessageData[];
+    permissionEmails: string[];
 }

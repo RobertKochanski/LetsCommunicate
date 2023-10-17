@@ -24,4 +24,16 @@ export class GroupService {
   postGroup(model: any){
     return this.http.post(this.apiURL + "Group", model);
   }
+
+  deleteGroup(id: any){
+    return this.http.delete(this.apiURL + "Group/" + id);
+  }
+
+  grantPermission(groupId: any, model: any){
+    return this.http.put(this.apiURL + "Group/GrantPermission/" + groupId, {userEmail: model});
+  }
+
+  revokePermission(groupId: any, model: any){
+    return this.http.put(this.apiURL + "Group/RevokePermission/" + groupId, {userEmail: model});
+  }
 }

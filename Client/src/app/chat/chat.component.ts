@@ -20,38 +20,29 @@ export class ChatComponent implements OnInit {
   groups: GroupData[] = [];
 
   faPlus = faPlusCircle;
-  faUser = faUserEdit;
+  faUsers = faUserEdit;
   faUserLeave = faUserMinus;
   faUserRemove = faUserAltSlash;
   faTrash = faTrash;
 
   createGroupMode: boolean = false;
 
-  invitationMode: boolean = false;
-  invitationGroupId: any;
+  chatModel: any = {};
 
-  model: any = {};
-
-  constructor(public accountService: AccountService, private groupService: GroupService, private messageService: MessageService, private invitationService: InvitationService,
+  constructor(public accountService: AccountService, private groupService: GroupService, private messageService: MessageService, 
     private route: ActivatedRoute, private router: Router, private toastr: ToastrService) 
   { 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
-    this.loadGroups();
+    this.loadGeneral();
     if(this.route.snapshot.paramMap.get('id') !== null){
       this.loadGroup();
     }
   }
 
-  loadGroup(){
-    this.groupService.getGroup(this.route.snapshot.paramMap.get('id')).subscribe(group => {
-      this.group = group.data;
-    })
-  }
-
-  loadGroups(){
+  loadGeneral(){
     this.groupService.getGroups().subscribe(groups => {
       this.groups = groups.data;
       if(this.route.snapshot.paramMap.get('id') === null){
@@ -60,56 +51,22 @@ export class ChatComponent implements OnInit {
     })
   }
 
-  createGroup(ngForm: NgForm){
-    this.groupService.postGroup(this.model).subscribe(() => {
-      this.createGroupMode = false;
-      ngForm.reset();
-      this.loadGroups();
-      this.toastr.success("Group Created");
-    }, error => {
-      this.toastr.error(error);
+  loadGroup(){
+    this.groupService.getGroup(this.route.snapshot.paramMap.get('id')).subscribe(group => {
+      this.group = group.data;
     })
   }
 
-  groupToggle(){
-    this.createGroupMode = !this.createGroupMode;
-  }
-
-  createMessage(groupId: any, ngForm: NgForm){
-    this.messageService.postMessages(groupId, this.model).subscribe(() => {
+  createMessage(ngForm: NgForm){
+    this.messageService.postMessages(this.group.id, this.chatModel).subscribe(() => {
       ngForm.reset();
       if(this.route.snapshot.paramMap.get('id') === null){
-        this.loadGroups();
+        this.loadGeneral();
+      } else {
+        this.loadGroup();
       }
-      this.loadGroup();
     }, error => {
       this.toastr.error(error);
     })
-  }
-
-  invitationToggle(groupId: any, ngForm: NgForm){
-    this.invitationGroupId = groupId;
-    this.invitationMode = !this.invitationMode;
-
-    ngForm.reset();
-  }
-
-  sendInvitation(ngForm: NgForm){
-    debugger
-    this.model = this.model;
-    this.invitationService.postInvitation(this.model, this.invitationGroupId).subscribe(() => {
-      ngForm.reset();
-      this.toastr.success("Invitation sent");
-    }, error => {
-      this.toastr.error(error);
-    })
-  }
-
-  leaveGroup(){
-    
-  }
-
-  removeFromGroup(){
-
   }
 }

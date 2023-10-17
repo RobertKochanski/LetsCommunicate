@@ -1,52 +1,13 @@
 <div class="container-fluid p-0 m-0 row">
     <div class="col-2 border border-1 border-primary">
-        <h4 *ngIf="(!invitationMode || createGroupMode) && (invitationMode || !createGroupMode)" class="text-center m-2">Groups <fa-icon (click)="groupToggle()" [icon]="faPlus"></fa-icon></h4>
-
-        <!-- Create Group Form -->
-        <div class="text-center m-2" *ngIf="createGroupMode">
-            <form #createGroupForm="ngForm" (ngSubmit)="createGroup(createGroupForm)" autocomplete="off">
-                <h4 class="border border-1 border-primary mt-5 p-3">Create new group</h4>
-                <label for="groupName" class="form-label m-0 pt-1">Group Name</label>
-                <input type="text" class="form-control" id="groupName" name="name" [(ngModel)]="model.name" placeholder="Name">
-
-                <button type="submit" class="btn btn-primary mt-2">Create</button>
-                <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="groupToggle()">Return</button>
-            </form>
-        </div>
-
-        <!-- Invitation Form -->
-        <div class="text-center m-2" *ngIf="invitationMode">
-            <form #invitationForm="ngForm" (ngSubmit)="sendInvitation(invitationForm)" autocomplete="off">
-                <h4 class="border border-1 border-primary mt-5 p-3">Invite user to group</h4>
-                <label for="invite" class="form-label m-0 pt-1">User email</label>
-                <input type="email" class="form-control" id="invite" name="invitedEmail" [(ngModel)]="model.invitedEmail" placeholder="User Email">
-
-                <button type="submit" class="btn btn-primary mt-2">Send</button>
-                <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="invitationToggle(null, invitationForm)">Return</button>
-            </form>
-        </div>
-
-        <!-- Group Section -->
-        <div class="list-group p-1" *ngIf="!createGroupMode && !invitationMode">
-            <div class="d-flex show" *ngFor="let group of groups">
-                <div class="d-flex justify-content-start list-group-item list-group-item-action mb-2 rounded-2" routerLink="/chat/{{group.id}}" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
-                    {{group.name}}
-                    <div class="d-flex justify-content-end ms-auto hide">
-                        <fa-icon class="px-1" (click)="invitationToggle(group.id, null)" [icon]="faUser"></fa-icon>
-                        <fa-icon *ngIf="user.email !== group.ownerEmail" class="px-1" (click)="leaveGroup()" [icon]="faUserLeave"></fa-icon>
-                        <fa-icon *ngIf="user.email === group.ownerEmail" class="px-1" (click)="removeFromGroup()" [icon]="faUserRemove"></fa-icon>
-                        <fa-icon *ngIf="user.email === group.ownerEmail" class="px-1" (click)="groupToggle()" [icon]="faTrash"></fa-icon>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-groups></app-groups>
     </div>
-
+    
     <div class="col-10 border border-1 border-primary">
         <div class="d-flex align-items-center flex-column" style="margin-top: 2%;">
             <h3 class="bg-info bg-gradient rounded-3 p-2" style="color: chartreuse;">{{group?.name | titlecase}}</h3>
             <div class="border border-1 border-info rounded-3 m-2 p-2" style="height: 70vh; width: 100vh; background-color: rgb(201, 201, 201);">
-                <div *ngIf="group !== null" class="d-flex flex-column-reverse" style="height: 100%; width: 100%; overflow-y: scroll;">
+                <div *ngIf="group !== null" class="d-flex flex-column-reverse" style="height: 100%; width: 100%; overflow-y: auto;">
                     <ng-container *ngFor="let message of group?.messages">
                         <!-- Other users messages -->
                         <div *ngIf="user.id !== message.sender.id" class="rounded-3 p-1 m-1" style="background-color: gray;">
@@ -69,11 +30,16 @@
                 </div>
             </div>
             <div class="d-flex align-items-center">
-                <form #createMessageForm="ngForm" (ngSubmit)="createMessage(group.id, createMessageForm)" autocomplete="off" class="row">
-                    <textarea name="message" id="messageId" cols="30" rows="1" class="form-control my-2" style="width: 90vh;" [(ngModel)]="model.content" placeholder="Write something to others"></textarea>
+                <form #createMessageForm="ngForm" (ngSubmit)="createMessage(createMessageForm)" autocomplete="off" class="row">
+                    <textarea name="message" id="messageId" cols="30" rows="1" class="form-control my-2 hideScroll" style="width: 90vh;" 
+                        [(ngModel)]="chatModel.content" 
+                        (keyup.enter)="createMessage(createMessageForm)" 
+                        placeholder="Write something to others">
+                    </textarea>
                     <button type="submit" class="btn btn-primary my-2" style="width: 10vh;">Send</button>
                 </form>
             </div>
         </div>
     </div>
+    
 </div>

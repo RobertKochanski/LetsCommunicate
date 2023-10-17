@@ -26,16 +26,57 @@ namespace LetsCommunicate.API.Controllers
             return await _mediator.Send(query).Process();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllAsync(Guid id)
+        [HttpGet("{groupId}")]
+        public async Task<IActionResult> GetAsync(Guid groupId)
         {
-            return await _mediator.Send(new GetGroupQuery(id)).Process();
+            return await _mediator.Send(new GetGroupQuery(groupId)).Process();
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(CreateGroupCommand command)
         {
             command.UserEmail = User.GetUserEmail();
+
+            return await _mediator.Send(command).Process();
+        }
+
+        [HttpDelete("{groupId}")]
+        public async Task<IActionResult> Delete(Guid groupId)
+        {
+            var command = new DeleteGroupCommand(groupId, User.GetUserEmail());
+
+            return await _mediator.Send(command).Process();
+        }
+
+        [HttpPut("RemoveFromGroup/{groupId}")]
+        public async Task<IActionResult> RemoveFromGroup(RemoveFromGroupCommand command, Guid groupId)
+        {
+            command.GroupId = groupId;
+            command.LoggedUserEmail = User.GetUserEmail();
+
+            return await _mediator.Send(command).Process();
+        }
+
+        [HttpPut("LeaveGroup/{groupId}")]
+        public async Task<IActionResult> LeaveGroup(Guid groupId)
+        {
+            var command = new LeaveGroupCommand(groupId, User.GetUserEmail());
+
+            return await _mediator.Send(command).Process();
+        }
+
+        [HttpPut("GrantPermission/{groupId}")]
+        public async Task<IActionResult> GrantPermission(GrantPermissionCommand command, Guid groupId)
+        {
+            command.GroupId = groupId;
+
+            return await _mediator.Send(command).Process();
+        }
+
+        [HttpPut("RevokePermission/{groupId}")]
+        public async Task<IActionResult> RemovePermission(RevokePermissionCommand command, Guid groupId)
+        {
+            command.GroupId = groupId;
 
             return await _mediator.Send(command).Process();
         }

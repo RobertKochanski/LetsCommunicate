@@ -9,5 +9,7 @@
 
         public List<UserResponse> Users { get; set; }
         public List<MessageResponse> Messages { get; set; }
+
+        public List<string> PermissionEmails { get; set; }
     }
 }

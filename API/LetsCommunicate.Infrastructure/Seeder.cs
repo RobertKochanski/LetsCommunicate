@@ -46,8 +46,13 @@ namespace LetsCommunicate.Infrastructure
                 Name = "General",
                 OwnerEmail = admin.Email,
             };
-            group.AppUsers.Add(await _userManager.FindByEmailAsync(admin.Email));
 
+            var permission = new Permission() { UserEmail = admin.Email };
+
+            group.Members.Add(await _userManager.FindByEmailAsync(admin.Email));
+            group.EmailsPermission.Add(permission);
+
+            await _dbContext.Permissions.AddAsync(permission);
             await _dbContext.Groups.AddAsync(group);
             await _dbContext.SaveChangesAsync();
         }

@@ -45,14 +45,15 @@ namespace LetsCommunicate.Domain.Queries
             }
 
             var groups = _dbContext.Groups
-                .Where(x => x.AppUsers.Contains(user))
+                .Where(x => x.Members.Contains(user))
                 .Select(x => new GroupResponse()
                 {
                     Id = x.Id,
                     Name = x.Name,
                     OwnerEmail = x.OwnerEmail,
-                    Users = x.AppUsers.Select(x => new UserResponse()
+                    Users = x.Members.Select(x => new UserResponse()
                     {
+                        Id = x.Id,
                         Email = x.Email,
                         UserName = x.UserName,
                         Token = null
@@ -71,7 +72,12 @@ namespace LetsCommunicate.Domain.Queries
                         },
                         MessageSent = x.MessageSent
                     }).OrderByDescending(x => x.MessageSent).ToList(),
+
+                    PermissionEmails = x.EmailsPermission
+                    .Select(x => new string(x.UserEmail))
+                    .ToList()
                 })
+                .OrderBy(x => x.Name)
                 .AsNoTracking();
 
             try

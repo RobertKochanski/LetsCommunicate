@@ -4,6 +4,7 @@ using LetsCommunicate.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsCommunicate.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230930215536_changedGroupMembersPropName")]
+    partial class changedGroupMembersPropName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,26 +222,6 @@ namespace LetsCommunicate.Infrastructure.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Permission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Permissions");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -392,15 +374,6 @@ namespace LetsCommunicate.Infrastructure.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Permission", b =>
-                {
-                    b.HasOne("LetsCommunicate.Infrastructure.Entities.Group", null)
-                        .WithMany("EmailsPermission")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("LetsCommunicate.Infrastructure.Entities.AppRole", null)
@@ -449,8 +422,6 @@ namespace LetsCommunicate.Infrastructure.Migrations
 
             modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Group", b =>
                 {
-                    b.Navigation("EmailsPermission");
-
                     b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618

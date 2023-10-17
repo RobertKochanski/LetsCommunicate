@@ -47,7 +47,7 @@ namespace LetsCommunicate.Domain.Commands.InvitationCommand.Handlers
                 return Result.BadRequest("Can not find group");
             }
 
-            group.AppUsers.Add(user);
+            group.Members.Add(user);
             _dbContext.Invitations.Remove(invitation);
 
             await _dbContext.SaveChangesAsync();

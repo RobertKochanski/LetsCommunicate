@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using LetsCommunicate.Domain.Results;
-using System.Runtime.CompilerServices;
 
 namespace LetsCommunicate.Domain.Queries
 {
@@ -38,6 +37,8 @@ namespace LetsCommunicate.Domain.Queries
             var group = await _dbContext.Groups
                 .Include(x => x.Messages)
                     .ThenInclude(x => x.Sender)
+                .Include(x => x.EmailsPermission)
+                .Include(x => x.Members)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (group == null)
@@ -51,8 +52,9 @@ namespace LetsCommunicate.Domain.Queries
                 Id = group.Id,
                 Name = group.Name,
                 OwnerEmail = group.OwnerEmail,
+
                 Messages = group.Messages
-                    .OrderByDescending(x => x.Id)
+                    .OrderByDescending(x => x.MessageSent)
                     .Select(x => new MessageResponse()
                 {
                     Content = x.Content,
@@ -66,12 +68,18 @@ namespace LetsCommunicate.Domain.Queries
                     },
                     MessageSent = x.MessageSent,
                 }).ToList(),
-                Users = group.AppUsers.Select(x => new UserResponse()
+
+                Users = group.Members.Select(x => new UserResponse()
                 {
+                    Id = x.Id,
                     UserName = x.UserName,
                     Email = x.Email,
                     Token = null,
                 }).ToList(),
+
+                PermissionEmails = group.EmailsPermission
+                    .Select(x => new string(x.UserEmail))
+                    .ToList()
             };
 
             try

@@ -1,6 +1,4 @@
-﻿using LetsCommunicate.Infrastructure.Entities;
-
-namespace LetsCommunicate.Infrastructure.Models
+﻿namespace LetsCommunicate.Infrastructure.Models
 {
     public class MessageResponse
     {

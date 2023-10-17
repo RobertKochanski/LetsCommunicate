@@ -43,9 +43,13 @@ namespace LetsCommunicate.Domain.Commands.GroupCommand.Handlers
                 OwnerEmail = request.UserEmail!,
             };
 
+            var permission = new Permission() { UserEmail = user.Email, GroupId = group.Id };
+
             try
             {
-                group.AppUsers.Add(user);
+                group.Members.Add(user);
+                group.EmailsPermission.Add(permission);
+                await _dbContext.Permissions.AddAsync(permission);
                 await _dbContext.Groups.AddAsync(group);
                 await _dbContext.SaveChangesAsync();
             }

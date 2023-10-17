@@ -24,7 +24,7 @@ namespace LetsCommunicate.Domain.Commands.InvitationCommand.Handlers
         public async Task<Result> Handle(CreateInvitationCommand request, CancellationToken cancellationToken)
         {
             var group = await _dbContext.Groups
-                .Include(x => x.AppUsers)
+                .Include(x => x.Members)
                 .FirstOrDefaultAsync(x => x.Id == request.GroupId);
 
             var invitationCheck = await _dbContext.Invitations.Where(x => x.GroupId == request.GroupId && x.InvitedEmail == request.InvitedEmail).FirstOrDefaultAsync();
@@ -41,7 +41,7 @@ namespace LetsCommunicate.Domain.Commands.InvitationCommand.Handlers
                 return Result.BadRequest("Can not find group");
             }
 
-            if (group.AppUsers.Contains(await _userManager.FindByEmailAsync(request.InvitedEmail)))
+            if (group.Members.Contains(await _userManager.FindByEmailAsync(request.InvitedEmail)))
             {
                 _logger.LogError($"[{DateTime.Now}] User is already in the group");
                 return Result.BadRequest("User is already in the group");

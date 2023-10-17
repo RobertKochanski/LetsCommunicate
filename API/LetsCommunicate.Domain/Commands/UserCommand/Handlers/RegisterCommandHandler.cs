@@ -98,7 +98,7 @@ namespace LetsCommunicate.Domain.Commands.UserCommand.Handlers
                 return Result.BadRequest<UserResponse>("Can not find group");
             }
 
-            group.AppUsers.Add(await _userManager.FindByEmailAsync(appUser.Email));
+            group.Members.Add(await _userManager.FindByEmailAsync(appUser.Email));
 
             await _dbContext.SaveChangesAsync();
 

@@ -58,4 +58,15 @@ export class MembersComponent implements OnInit {
       })
     }
   }
+
+  leaveGroup(){
+    if(confirm("You really want to leave '" + this.group.name + "' group?")){
+      this.groupService.leaveGroup(this.group.id).subscribe(() => {
+        this.toastr.info("You leave group " + this.group.name);
+        this.router.navigateByUrl("/chat");
+      }, error => {
+        this.toastr.error(error);
+      })
+    }
+  }
 }

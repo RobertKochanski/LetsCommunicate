@@ -50,13 +50,13 @@ namespace LetsCommunicate.Domain.Commands.InvitationCommand.Handlers
             if (await _userManager.FindByEmailAsync(request.SenderEmail) == null)
             {
                 _logger.LogError($"[{DateTime.Now}] Can not find sender email");
-                return Result.BadRequest("Can not find sender email");
+                return Result.BadRequest("Can not find sender");
             }
 
             if (await _userManager.FindByEmailAsync(request.InvitedEmail) == null)
             {
                 _logger.LogError($"[{DateTime.Now}] Can not find invited email");
-                return Result.BadRequest("Can not find invited email");
+                return Result.BadRequest("Can not find user");
             }
 
             var invitation = new Invitation()

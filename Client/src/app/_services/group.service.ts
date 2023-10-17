@@ -29,6 +29,10 @@ export class GroupService {
     return this.http.delete(this.apiURL + "Group/" + id);
   }
 
+  leaveGroup(groupId: any){
+    return this.http.put(this.apiURL + "Group/LeaveGroup/" + groupId, {});
+  }
+
   grantPermission(groupId: any, model: any){
     return this.http.put(this.apiURL + "Group/GrantPermission/" + groupId, {userEmail: model});
   }

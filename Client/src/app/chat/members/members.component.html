@@ -40,7 +40,7 @@
                         <td>
                             <span *ngIf="member.email === group.ownerEmail && user.email !== group.ownerEmail"> You can not do anything to owner</span>
                             <button *ngIf="group.name !== 'General' && member.email === user.email && user.email !== group.ownerEmail" class="btn btn-outline-secondary m-1" (click)="leaveGroup()">Leave</button>
-                            <button *ngIf="group.permissionEmails.includes(user.email) && member.email !== group.ownerEmail && member.email !== user.email" class="btn btn-outline-danger m-1">Kick</button>
+                            <button *ngIf="group.permissionEmails.includes(user.email) && member.email !== group.ownerEmail && member.email !== user.email" class="btn btn-outline-danger m-1" (click)="removeFromGroup(member)">Kick</button>
                         </td>
                     </tr>
                 </tbody>

@@ -6,7 +6,12 @@
     <div class="col-10 border border-1 border-primary">
         <div class="d-flex align-items-center flex-column" style="margin-top: 2%;">
             <h3 class="bg-info bg-gradient rounded-3 p-2" style="color: chartreuse;">{{group?.name | titlecase}}</h3>
-            <div class="border border-1 border-info rounded-3 m-2 p-2" style="height: 70vh; width: 100vh; background-color: rgb(201, 201, 201);">
+            <div class="border border-1 border-info rounded-3 m-2 p-2" style="height: 1ex; min-height: 500px; width: 70%; background-color: rgb(201, 201, 201);">
+
+                <div *ngIf="group?.messages.length <= 0" class="d-flex flex-column-reverse text-center text-info">
+                    <h2>You have opportunity to be first<br> and send the first message to other group members</h2>
+                </div>
+
                 <div *ngIf="group !== null" class="d-flex flex-column-reverse" style="height: 100%; width: 100%; overflow-y: auto;">
                     <ng-container *ngFor="let message of group?.messages">
                         <!-- Other users messages -->

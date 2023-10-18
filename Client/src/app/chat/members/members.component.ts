@@ -62,8 +62,20 @@ export class MembersComponent implements OnInit {
   leaveGroup(){
     if(confirm("You really want to leave '" + this.group.name + "' group?")){
       this.groupService.leaveGroup(this.group.id).subscribe(() => {
-        this.toastr.info("You leave group " + this.group.name);
+        this.toastr.info("You left group " + this.group.name);
         this.router.navigateByUrl("/chat");
+      }, error => {
+        this.toastr.error(error);
+      })
+    }
+  }
+
+  removeFromGroup(member: any){
+    if(confirm("You are gonna remove this user '"+ member.userName +"' from group '" + this.group.name + "'")){
+      debugger
+      this.groupService.removeFromGroup(this.group.id, member.email).subscribe(() => {
+        this.toastr.info("You removed user " + member.userName + " from group " + this.group.name);
+        this.members = this.members.filter(x => x.userName !== member.userName);
       }, error => {
         this.toastr.error(error);
       })

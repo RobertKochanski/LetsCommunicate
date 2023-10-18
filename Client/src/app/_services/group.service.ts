@@ -33,6 +33,10 @@ export class GroupService {
     return this.http.put(this.apiURL + "Group/LeaveGroup/" + groupId, {});
   }
 
+  removeFromGroup(groupId: any, model: any){
+    return this.http.put(this.apiURL + "Group/RemoveFromGroup/" + groupId, {userEmail: model});
+  }
+
   grantPermission(groupId: any, model: any){
     return this.http.put(this.apiURL + "Group/GrantPermission/" + groupId, {userEmail: model});
   }

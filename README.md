@@ -18,7 +18,7 @@ Creation according to the CQRS pattern - Command and Query Responsibility Segreg
 - Domain (Business Logic Layer)
 - Infrastructure (Data Access Layer)
 
-## Frontend - used tehcnologies
+## Frontend - used technologies
 
 - **Angular 14**
 - **Bootstrap 5**

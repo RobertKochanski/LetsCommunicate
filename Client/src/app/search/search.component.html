@@ -1,0 +1,30 @@
+<div class="container mt-3">
+    <form #searchForm="ngForm" class="form-inline mb-3 text-center" (ngSubmit)="loadUsers()" autocomplete="off">
+
+        <div class="form-group px-2">
+            <label for="searchPhase">Search: </label>
+            <input class="p-1 m-1" type="text" id="searchPhase" name="searchPhase" placeholder="Email / Username" [(ngModel)]="searchPhase">
+            <button class="btn btn-primary m-1" type="submit">Search</button>
+            <button class="btn btn-primary m-1" type="button" (click)="resetForm(searchForm)">Reset</button>
+        </div>
+
+        <h3 class="text-center text-warning mt-4">Found {{users.length}} results!</h3>
+
+    </form>
+
+    <div class="row">
+        <div *ngFor="let user of users" class="col-2">
+            <div class="card mb-4" routerLink="/profile/{{user.id}}">
+                <div class="card-img-wrapper">
+                    <img *ngIf="user.email === 'admin@admin.com'" src="{{user.photoUrl || './assets/god.jpg'}}" alt="user img" class="card-img-top img-thumbnail" style="max-width: 100%; width:auto; height: auto;">
+                    <img *ngIf="user.email !== 'admin@admin.com'" src="{{user.photoUrl || './assets/user.png'}}" alt="user img" class="card-img-top img-thumbnail" style="max-width: 100%; width:auto; height: auto;">
+                </div>
+                <div class="card-body p-1">
+                    <h6 class="card-title text-center mb-1">
+                        {{user.userName}}, {{user.email}}
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

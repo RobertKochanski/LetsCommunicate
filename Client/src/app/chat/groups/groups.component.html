@@ -1,50 +1,50 @@
 <div class="container">
-<h4 *ngIf="!createGroupMode && !invitationMode" class="text-center m-2">Groups <fa-icon (click)="groupToggle()" [icon]="faPlus"></fa-icon></h4>
+    <h4 *ngIf="!createGroupMode && !invitationMode" class="text-center m-2">Groups <fa-icon (click)="groupToggle()" [icon]="faPlus"></fa-icon></h4>
 
-<!-- Group Section -->
-<div class="list-group p-1" *ngIf="!createGroupMode && !invitationMode">
-    <div class="row d-flex show" *ngFor="let group of groups">
-        <div class="d-flex list-group-item list-group-item-action rounded-2 p-0 my-1 mx-0" routerLinkActive="active">
-            <span class="col-10 d-flex justify-content-start rounded-2" style="padding-left: 5%; margin-top: 5px;" routerLink="/chat/{{group.id}}">{{group.name}}</span>
-            <div class="col-2 d-flex justify-content-end align-items-center hide ms-auto">
-                <button class="btn btn-primary btn rounded-4 me-1" routerLink="/chat/{{group.id}}/members">
-                    <fa-icon [icon]="faUsers" size="sm"></fa-icon>
-                </button>
-                <button *ngIf="group.permissionEmails.includes(user.email)" class="btn btn-primary btn rounded-4 me-1" (click)="invitationToggle(group.id, null)">
-                    <fa-icon [icon]="faUserPlus" size="sm"></fa-icon>
-                </button>
-                <button *ngIf="group.name !== 'General' && user.email !== group.ownerEmail" class="btn btn-primary btn rounded-4 me-1" (click)="leaveGroup(group)">
-                    <fa-icon [icon]="faUserLeave" size="sm" style="color: orange;"></fa-icon>
-                </button>
-                <button *ngIf="group.name !== 'General' && group.ownerEmail === user.email" class="btn btn-primary btn rounded-4 me-1" (click)="deleteGroup(group)">
-                    <fa-icon [icon]="faTrash" size="sm" style="color: red;"></fa-icon>
-                </button>
+    <!-- Group Section -->
+    <div class="list-group p-1" *ngIf="!createGroupMode && !invitationMode">
+        <div class="row d-flex show" *ngFor="let group of groups">
+            <div class="d-flex list-group-item list-group-item-action rounded-2 p-0 my-1 mx-0" routerLinkActive="active">
+                <span class="col-10 d-flex justify-content-start rounded-2" style="padding-left: 5%; margin-top: 5px;" routerLink="/chat/{{group.id}}">{{group.name}}</span>
+                <div class="col-2 d-flex justify-content-end align-items-center hide ms-auto">
+                    <button class="btn btn-primary btn rounded-4" routerLink="/chat/{{group.id}}/members">
+                        <fa-icon [icon]="faUsers" size="xs"></fa-icon>
+                    </button>
+                    <button *ngIf="group.permissionEmails.includes(user.email)" class="btn btn-primary btn rounded-4" (click)="invitationToggle(group.id, null)">
+                        <fa-icon [icon]="faUserPlus" size="xs"></fa-icon>
+                    </button>
+                    <button *ngIf="group.name !== 'General' && user.email !== group.ownerEmail" class="btn btn-primary btn rounded-4" (click)="leaveGroup(group)">
+                        <fa-icon [icon]="faUserLeave" size="xs" style="color: orange;"></fa-icon>
+                    </button>
+                    <button *ngIf="group.name !== 'General' && group.ownerEmail === user.email" class="btn btn-primary btn rounded-4" (click)="deleteGroup(group)">
+                        <fa-icon [icon]="faTrash" size="xs" style="color: red;"></fa-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Create Group Form -->
-<div class="text-center m-2" *ngIf="createGroupMode">
-    <form #createGroupForm="ngForm" (ngSubmit)="createGroup(createGroupForm)" autocomplete="off">
-        <h4 class="border border-1 border-primary mt-5 p-3">Create new group</h4>
-        <label for="groupName" class="form-label m-0 pt-1">Group Name</label>
-        <input type="text" class="form-control" id="groupName" name="name" [(ngModel)]="groupModel.name" placeholder="Name">
+    <!-- Create Group Form -->
+    <div class="text-center m-2" *ngIf="createGroupMode">
+        <form #createGroupForm="ngForm" (ngSubmit)="createGroup(createGroupForm)" autocomplete="off">
+            <h4 class="border border-1 border-primary mt-5 p-3">Create new group</h4>
+            <label for="groupName" class="form-label m-0 pt-1">Group Name</label>
+            <input type="text" class="form-control" id="groupName" name="name" [(ngModel)]="groupModel.name" placeholder="Name">
 
-        <button type="submit" class="btn btn-primary mt-2">Create</button>
-        <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="groupToggle()">Return</button>
-    </form>
-</div>
+            <button type="submit" class="btn btn-primary mt-2">Create</button>
+            <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="groupToggle()">Return</button>
+        </form>
+    </div>
 
-<!-- Send Invitation Form -->
-<div class="text-center m-2" *ngIf="invitationMode">
-    <form #sendInvitationForm="ngForm" (ngSubmit)="sendInvitation(sendInvitationForm)" autocomplete="off">
-        <h4 class="border border-1 border-primary mt-5 p-3">Send invitation</h4>
-        <label for="invitedEmail" class="form-label m-0 pt-1">User Email</label>
-        <input type="text" class="form-control" id="invitedEmail" name="name" [(ngModel)]="invitationModel.invitedEmail" placeholder="Email">
+    <!-- Send Invitation Form -->
+    <div class="text-center m-2" *ngIf="invitationMode">
+        <form #sendInvitationForm="ngForm" (ngSubmit)="sendInvitation(sendInvitationForm)" autocomplete="off">
+            <h4 class="border border-1 border-primary mt-5 p-3">Send invitation</h4>
+            <label for="invitedEmail" class="form-label m-0 pt-1">User Email</label>
+            <input type="text" class="form-control" id="invitedEmail" name="name" [(ngModel)]="invitationModel.invitedEmail" placeholder="Email">
 
-        <button type="submit" class="btn btn-primary mt-2">Send</button>
-        <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="invitationToggle(null, sendInvitationForm)">Return</button>
-    </form>
-</div>
+            <button type="submit" class="btn btn-primary mt-2">Send</button>
+            <button type="button" class="btn btn-secondary ms-3 mt-2" (click)="invitationToggle(null, sendInvitationForm)">Return</button>
+        </form>
+    </div>
 </div>

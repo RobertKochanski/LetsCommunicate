@@ -7,6 +7,7 @@ import { AccountService } from 'src/app/_services/account.service';
   styleUrls: ['./not-found.component.css']
 })
 export class NotFoundComponent implements OnInit {
+  user = this.accountService.currentUser();
 
   constructor(public accountService: AccountService) { }
 

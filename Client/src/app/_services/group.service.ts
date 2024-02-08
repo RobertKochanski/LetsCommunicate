@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { GroupListResponse } from '../_models/groupListResponse';
+import { GroupListResponse } from '../_models/Response/groupListResponse';
 import { Observable } from 'rxjs';
-import { GroupResponse } from '../_models/groupResponse';
+import { GroupResponse } from '../_models/Response/groupResponse';
 
 @Injectable({
   providedIn: 'root'

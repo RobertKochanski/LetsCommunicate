@@ -18,14 +18,17 @@ import { RegisterComponent } from './home/register/register.component';
 import { ForgotPasswordComponent } from './home/forgot-password/forgot-password.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NavComponent } from './nav/nav.component';
-import { FriendsComponent } from './friends/friends.component';
 import { InvitationsComponent } from './invitations/invitations.component';
 import { ProfileComponent } from './profile/profile.component';
-import { EditComponent } from './profile/edit/edit.component'
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { ChatComponent } from './chat/chat.component';
 import { MembersComponent } from './chat/members/members.component';
 import { GroupsComponent } from './chat/groups/groups.component';
+import { SearchComponent } from './search/search.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DatePipe } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 @NgModule({
   declarations: [
@@ -36,13 +39,12 @@ import { GroupsComponent } from './chat/groups/groups.component';
     RegisterComponent,
     ForgotPasswordComponent,
     NavComponent,
-    FriendsComponent,
     InvitationsComponent,
     ProfileComponent,
-    EditComponent,
     ChatComponent,
     MembersComponent,
     GroupsComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,
@@ -58,11 +60,15 @@ import { GroupsComponent } from './chat/groups/groups.component';
     }),
     NgParticlesModule,
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    BsDatepickerModule,
+    MatProgressBarModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    DatePipe,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

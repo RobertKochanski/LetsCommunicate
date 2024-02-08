@@ -1,1 +1,122 @@
-<p>profile works!</p>
+<div class="row">
+    <div class="col-4">
+        <div class="card">
+            <div class="image-upload text-center">
+                <label for="file-input">
+                    <div class="container m-0">
+                        <div *ngIf="user?.email === userInfo?.email">
+                            <img *ngIf="userInfo?.email === 'admin@admin.com'" src="{{'./assets/god.jpg'}}" class="image card-img-top">
+                            <img *ngIf="userInfo?.email !== 'admin@admin.com' && userInfo?.photoUrl === null" src="{{'./assets/user.png'}}" alt="User avatar" class="image card-img-top">
+                            <img *ngIf="userInfo?.email !== 'admin@admin.com' && userInfo?.photoUrl !== null" src="{{userInfo?.photoUrl}}" class="image card-img-top" style="max-width: 500px; height: auto;">
+                            <div  class="middle">
+                                <div class="text">Change</div>
+                            </div> 
+                        </div>
+
+                        <div *ngIf="user?.email !== userInfo?.email">
+                            <img *ngIf="userInfo?.email === 'admin@admin.com'" src="{{'./assets/god.jpg'}}" class="card-img-top">
+                            <img *ngIf="userInfo?.email !== 'admin@admin.com' && userInfo?.photoUrl === null" src="{{'./assets/user.png'}}" alt="User avatar" class="card-img-top">
+                            <img *ngIf="userInfo?.email !== 'admin@admin.com' && userInfo?.photoUrl !== null" src="{{userInfo?.photoUrl}}" class="card-img-top" style="max-width: 500px; height: auto;">
+                        </div>
+                        
+                    </div>
+                </label>
+                
+                <input *ngIf="user?.email === userInfo?.email" id="file-input" type="file" (change)="uploadImage($event)"/>                
+            </div>
+
+            <div class="card-body mt-4">
+                <div>
+                    <strong *ngIf="userInfo?.city !== '' && userInfo?.country !== ''">Location: {{userInfo?.city}}, {{userInfo?.country}}</strong>
+                    <strong *ngIf="userInfo?.city === '' && userInfo?.country !== ''">Location: {{userInfo?.country}}</strong>
+                    <strong *ngIf="userInfo?.city !== '' && userInfo?.country === ''">Location: {{userInfo?.city}}</strong>
+                    <strong *ngIf="userInfo?.city === '' && userInfo?.country === ''">Location: No data</strong>
+                    <p></p>
+                </div>
+                <div>
+                    <strong *ngIf="userInfo?.email === 'admin@admin.com'">Age: Idk too many</strong>
+                    <strong *ngIf="userInfo?.email !== 'admin@admin.com'">Age: {{userInfo?.age}}</strong>
+                    <p></p>
+                </div>
+                <div>
+                    <strong *ngIf="userInfo?.email === 'admin@admin.com'">Member since: From the beginning of the world and even earlier</strong>
+                    <strong *ngIf="userInfo?.email !== 'admin@admin.com'">Member since: {{userInfo?.registerDate | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</strong>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <tabset>
+            <hr>
+            <tab heading="Profile">
+                <form #profileForm="ngForm" id="profileForm">
+                    <label for="username"><h4 class="mb-0 mt-2">Email:</h4></label>
+                    <input [value]="userInfo?.email" type="text" name="email" class="form-control mb-2" disabled>
+                    <label for="username"><h4 class="mb-0">Username:</h4></label>
+                    <input [value]="userInfo?.userName" type="text" name="username" class="form-control mb-2" disabled>
+                    <h4 class="mb-0 mt-2">Description:</h4>
+                    <textarea class="form-control" [value]="userInfo?.description" name="description" rows="4" disabled></textarea>
+                    <div class="form-inline mt-2">
+                        <label for="city"><h4 class="mb-0 mt-2">City:</h4></label>
+                        <input [value]="userInfo?.city" type="text" name="city" class="form-control mb-2" disabled>
+                        <label for="country"><h4 class="mb-0 mt-2">Country:</h4></label>
+                        <input [value]="userInfo?.country" type="text" name="country" class="form-control" disabled>
+                    </div>
+                </form>
+            </tab>
+            <tab *ngIf="user?.email === userInfo?.email" heading="Edit">
+                <form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser(editForm)">
+                    <label for="username"><h4 class="mb-0">Username:</h4></label>
+                    <input [ngModel]="editModel?.userName" (ngModelChange)="editModel.userName=$event" type="text" name="username" class="form-control mb-2">
+                    <h4 class="mb-0 mt-2">Description:</h4>
+                    <textarea class="form-control" [ngModel]="editModel?.description" (ngModelChange)="editModel.description=$event" name="description" rows="4"></textarea>
+                    <div class="form-inline mt-2">
+                        <label for="city"><h4 class="mb-0 mt-2">City:</h4></label>
+                        <input [ngModel]="editModel?.city" (ngModelChange)="editModel.city=$event" type="text" name="city" class="form-control mb-2">
+                        <label for="country"><h4 class="mb-0 mt-2">Country:</h4></label>
+                        <input [ngModel]="editModel?.country" (ngModelChange)="editModel.country=$event" type="text" name="country" class="form-control">
+                    </div>
+                    <div class="py-3 ps-2">
+                        <button [disabled]="!editForm.dirty" form="editForm" type="submit" class="btn btn-success btn-block">Save changes</button>
+                    </div>
+                </form>
+            </tab>
+            <tab *ngIf="user?.email === userInfo?.email" heading="Change Password">
+                <div class="row">
+                    <div class="col-4">
+                        <form #changePasswordForm="ngForm" id="changePasswordForm" (ngSubmit)="changePassword(changePasswordForm)">
+                            <label for="oldPassword"><h4 class="mb-0">Old Password:</h4></label>
+                            <input [ngModel]="passwordModel?.oldPassword" (ngModelChange)="passwordModel.oldPassword=$event" type="password" name="oldPassword" class="form-control mb-2" required>
+                            <label for="newPassword"><h4 class="mb-0">New Password:</h4></label>
+                            <input [ngModel]="passwordModel?.newPassword" (ngModelChange)="passwordModel.newPassword=$event" type="password" name="newPassword" class="form-control mb-2" required>
+                            <label for="confirmNewPassword"><h4 class="mb-0">Confirm Password:</h4></label>
+                            <input [ngModel]="passwordModel?.confirmNewPassword" (ngModelChange)="passwordModel.confirmNewPassword=$event" type="password" name="confirmNewPassword" class="form-control mb-2" required>
+                        </form>
+                        
+                        <button [disabled]="changePasswordForm.invalid" form="changePasswordForm" type="submit" class="btn btn-primary btn-block">Changes Password</button>
+
+                        <div class="row mt-3" *ngIf="validationErrors.length > 0">
+                            <ul class="text-danger">
+                                <li *ngFor="let error of validationErrors">
+                                    {{error}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h4 class="text-info"> INFO:</h4>
+                        <ul class="text-danger">
+                            <li>Passwords must be at least 6 characters.</li>
+                            <li>Must have at least one non alphanumeric character.</li>
+                            <li>Passwords must have at least one digit ('0'-'9').</li>
+                            <li>Passwords must have at least one uppercase ('A'-'Z').</li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

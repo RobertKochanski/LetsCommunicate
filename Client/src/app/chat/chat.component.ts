@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GroupData } from '../_models/groupData';
+import { GroupData } from '../_models/Data/groupData';
 import { AccountService } from '../_services/account.service';
 import { GroupService } from '../_services/group.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { faPlusCircle, faTrash, faUserEdit, faUserMinus, faUserAltSlash } from '
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MessageService } from '../_services/message.service';
-import { InvitationService } from '../_services/invitation.service';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-chat',
@@ -36,35 +36,25 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadGeneral();
-    if(this.route.snapshot.paramMap.get('id') !== null){
       this.loadGroup();
-    }
-  }
-
-  loadGeneral(){
-    this.groupService.getGroups().subscribe(groups => {
-      this.groups = groups.data;
-      if(this.route.snapshot.paramMap.get('id') === null){
-        this.group = this.groups.find(x => x.name === "General");
-      }
-    })
   }
 
   loadGroup(){
-    this.groupService.getGroup(this.route.snapshot.paramMap.get('id')).subscribe(group => {
-      this.group = group.data;
-    })
+    if(this.route.snapshot.paramMap.get('id') === null){
+      this.groupService.getGroup(uuid.NIL).subscribe(group => {
+        this.group = group.data;
+      })
+    } else {
+      this.groupService.getGroup(this.route.snapshot.paramMap.get('id')).subscribe(group => {
+        this.group = group.data;
+      })
+    }
   }
 
   createMessage(ngForm: NgForm){
     this.messageService.postMessages(this.group.id, this.chatModel).subscribe(() => {
       ngForm.reset();
-      if(this.route.snapshot.paramMap.get('id') === null){
-        this.loadGeneral();
-      } else {
-        this.loadGroup();
-      }
+      this.loadGroup();
     }, error => {
       this.toastr.error(error);
     })

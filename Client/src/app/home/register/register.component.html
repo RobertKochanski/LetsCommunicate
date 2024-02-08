@@ -13,6 +13,14 @@
     <div class="form-group mt-2">
         <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="model.passwordConfirm" placeholder="Confirm password">
     </div>
+    <div class="row mt-2">
+        <div class="col-9 form-group mb-3">
+          <input type="text" class="form-control" name="dateOfBirth" #dp="bsDatepicker" bsDatepicker [bsConfig]="bsConfig" [maxDate]="maxDate" [(ngModel)]="model.dateOfBirth" placeholder="Date of birth">
+        </div>
+        <div class="col-3 d-flex justify-content-end ms-auto form-group mb-3">
+          <button class="btn btn-primary btn-sm" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen" type="button">Date Picker</button>
+        </div>
+    </div>
     <div class="form-group text-center">
         <button class="btn btn-success mt-2 me-4" style="width: 35%;" type="submit">Register</button>
         <button class="btn btn-secondary mt-2 ms-4" style="width: 25%;" (click)="cancel()" type="button">Cancel</button>

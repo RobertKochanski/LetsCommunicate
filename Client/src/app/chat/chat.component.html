@@ -1,47 +1,62 @@
 <div class="container-fluid p-0 m-0 row">
-    <div class="col-2 border border-1 border-primary">
+    <div class="col-2 border border-1 border-primary" style="height: 85vh;">
         <app-groups></app-groups>
     </div>
     
     <div class="col-10 border border-1 border-primary">
         <div class="d-flex align-items-center flex-column" style="margin-top: 2%;">
             <h3 class="bg-info bg-gradient rounded-3 p-2" style="color: chartreuse;">{{group?.name | titlecase}}</h3>
-            <div class="border border-1 border-info rounded-3 m-2 p-2" style="height: 1ex; min-height: 500px; width: 70%; background-color: rgb(201, 201, 201);">
+            <div class="border border-1 border-info rounded-3 m-2 p-2" style="min-height: 65vh; width: 70%; background-color: rgb(201, 201, 201);">
 
-                <div *ngIf="group?.messages.length <= 0" class="d-flex flex-column-reverse text-center text-info">
-                    <h2>You have opportunity to be first<br> and send the first message to other group members</h2>
-                </div>
-
-                <div *ngIf="group !== null" class="d-flex flex-column-reverse" style="height: 100%; width: 100%; overflow-y: auto;">
+                <div *ngIf="group !== null" class="d-flex flex-column-reverse" style="height: 65vh; width: 100%; overflow-y: auto;">
+                    <div *ngIf="group?.messages.length <= 0" class="mb-auto text-center text-info">
+                        <h2>You have opportunity to be first<br> and send the first message to other group members</h2>
+                    </div>
                     <ng-container *ngFor="let message of group?.messages">
                         <!-- Other users messages -->
-                        <div *ngIf="user.id !== message.sender.id" class="rounded-3 p-1 m-1" style="background-color: gray;">
-                            <div class="d-flex justify-content-start">
-                                <div class="text-warning">{{message.sender.userName | titlecase}}</div>
-                                <div class="text-white ps-4">{{message.messageSent | date:"dd/MM/yyyy 'at' hh:mm:ss"}}</div>
+                        <div *ngIf="user.id !== message.sender.id" class="row rounded-3 m-1" style="background-color: gray;">
+                            <div class="col-1 d-flex">
+                                <div class="d-flex align-items-center">
+                                    <img *ngIf="message.sender.userName !== 'admin'" class="rounded-circle" src="{{message.sender.photoUrl || './assets/user.png'}}" alt="User">
+                                    <img *ngIf="message.sender.userName === 'admin'" class="rounded-circle" src="{{'./assets/god.jpg'}}" alt="Admin">
+                                </div>
                             </div>
-                            <div class="d-flex justify-content-start" style="white-space: pre-wrap; word-break: break-all;">{{message.content}}</div>
+                            <div class="col-11 px-0">
+                                <div class="d-flex justify-content-start">
+                                    <div class="text-warning"><h5>{{message.sender.userName | titlecase}}</h5></div>
+                                    <div class="text-white ps-4">{{message.messageSent | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</div>
+                                </div>
+                                <div class="d-flex justify-content-start pb-2" style="white-space: pre-wrap; word-break: break-word;">{{message.content}}</div>
+                            </div>
                         </div>
 
                         <!-- Own messages -->
-                        <div *ngIf="user.id === message.sender.id" class="rounded-3 p-1 m-1" style="background-color: rgb(161, 161, 161);">
-                            <div class="d-flex justify-content-end">
-                                <div class="text-white pe-4">{{message.messageSent | date:"dd/MM/yyyy 'at' hh:mm:ss"}}</div>
-                                <div class="text-warning">{{user.userName | titlecase}}</div>
+                        <div *ngIf="user.id === message.sender.id" class="row rounded-3 m-1" style="background-color: rgb(161, 161, 161);">
+                            <div class="col-11 px-0">
+                                <div class="d-flex justify-content-end">
+                                    <div class="text-white pe-4">{{message.messageSent | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</div>
+                                    <div class="text-warning"><h5>{{message.sender.userName | titlecase}}</h5></div>
+                                </div>
+                                <div class="d-flex justify-content-end pb-2" style="white-space: pre-wrap; word-break: break-word; text-align: right;">{{message.content}}</div>
                             </div>
-                            <div class="d-flex justify-content-end" style="white-space: pre-wrap; word-break: break-all; text-align: right;">{{message.content}}</div>
+                            <div class="col-1 d-flex">
+                                <div class="d-flex align-items-center">
+                                    <img *ngIf="message.sender.userName !== 'admin'" class="rounded-circle" src="{{user.photoUrl || './assets/user.png'}}" alt="User">
+                                    <img *ngIf="message.sender.userName === 'admin'" class="rounded-circle" src="{{'./assets/god.jpg'}}" alt="Admin">
+                                </div>
+                            </div>
                         </div>
                     </ng-container>
                 </div>
             </div>
             <div class="d-flex align-items-center">
-                <form #createMessageForm="ngForm" (ngSubmit)="createMessage(createMessageForm)" autocomplete="off" class="row">
-                    <textarea name="message" id="messageId" cols="30" rows="1" class="form-control my-2 hideScroll" style="width: 90vh;" 
+                <form #createMessageForm="ngForm" (ngSubmit)="createMessage(createMessageForm)" autocomplete="off" class="d-flex">
+                    <textarea name="message" id="messageId" cols="100" rows="1" class="form-control my-2 d-flex hideScroll" style="width: 100%;" 
                         [(ngModel)]="chatModel.content" 
                         (keyup.enter)="createMessage(createMessageForm)" 
                         placeholder="Write something to others">
                     </textarea>
-                    <button type="submit" class="btn btn-primary my-2" style="width: 10vh;">Send</button>
+                    <button type="submit" class="btn btn-primary my-2" style="width: 10%;">Send</button>
                 </form>
             </div>
         </div>

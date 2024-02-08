@@ -4,10 +4,12 @@
 
 img{
     max-height: 50px;
+    max-width: 75px;
+    min-height: 25px;
+    min-width: 25px;
     border: 2px solid #fff;
     display: inline;
 }
-
 a {
     cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { InvitationData } from '../_models/invitationData';
+import { InvitationData } from '../_models/Data/invitationData';
 import { InvitationService } from '../_services/invitation.service';
 import { ToastrService } from 'ngx-toastr';
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons';

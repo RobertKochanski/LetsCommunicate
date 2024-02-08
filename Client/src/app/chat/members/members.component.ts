@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faUserMinus, faStar, faUserAltSlash } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
-import { GroupData } from 'src/app/_models/groupData';
-import { UserData } from 'src/app/_models/userData';
+import { GroupData } from 'src/app/_models/Data/groupData';
+import { LoginUserData } from 'src/app/_models/Data/loginUserData';
 import { AccountService } from 'src/app/_services/account.service';
 import { GroupService } from 'src/app/_services/group.service';
 
@@ -16,7 +16,7 @@ export class MembersComponent implements OnInit {
   user = this.accountService.currentUser();
 
   group: GroupData;
-  members: UserData[];
+  members: LoginUserData[];
 
   faStar = faStar;
   faUserLeave = faUserMinus;

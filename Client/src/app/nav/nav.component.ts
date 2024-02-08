@@ -10,6 +10,8 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+  user = this.accountService.currentUser();
+
   model: any = {}
 
   constructor(public accountService: AccountService, private toastr: ToastrService, private router:Router) { }

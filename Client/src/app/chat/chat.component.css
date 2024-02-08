@@ -36,3 +36,12 @@ background: #888;
 ::-webkit-scrollbar-thumb:hover {
 background: #555; 
 }
+
+img{
+    max-height: 50px;
+    max-width: 50px;
+    min-height: 25px;
+    min-width: 25px;
+    border: 2px solid #fff;
+    display: inline;
+}

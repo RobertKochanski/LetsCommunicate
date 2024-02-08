@@ -4,12 +4,11 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
-import { FriendsComponent } from './friends/friends.component';
 import { InvitationsComponent } from './invitations/invitations.component';
 import { ProfileComponent } from './profile/profile.component';
-import { EditComponent } from './profile/edit/edit.component';
 import { ChatComponent } from './chat/chat.component';
 import { MembersComponent } from './chat/members/members.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, title: "Let's Communicate"},
@@ -23,10 +22,10 @@ const routes: Routes = [
       {path: 'chat/:id', component: ChatComponent},
       {path: 'chat/:id/members', component: MembersComponent},
 
-      {path: 'friends', component: FriendsComponent},
+      {path: 'search', component: SearchComponent},
       {path: 'invitations', component: InvitationsComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: 'profile/edit', component: EditComponent},
+      {path: 'profile/:id', component: ProfileComponent},
     ]
   },
   {path: 'server-error', component: ServerErrorComponent, title: "Server-error"},

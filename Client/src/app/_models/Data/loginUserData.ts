@@ -1,8 +1,9 @@
 import * as uuid from 'uuid';
 
-export interface UserData{
+export interface LoginUserData{
     id: uuid;
     userName: string;
     email: string;
+    photoUrl: string | undefined;
     token: string;
 }

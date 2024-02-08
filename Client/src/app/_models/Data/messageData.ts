@@ -1,9 +1,9 @@
 import * as uuid from 'uuid';
-import { UserData } from './userData';
+import { LoginUserData } from './loginUserData';
 
 export interface MessageData{
     senderId: uuid;
-    sender: UserData;
+    sender: LoginUserData;
     groupId: uuid;
     content: string;
     messageSent: Date;

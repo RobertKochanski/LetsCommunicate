@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './_services/account.service';
-import { ClickMode, HoverMode, MoveDirection, OutMode, Container, Engine } from 'tsparticles-engine';
-import { loadSlim } from 'tsparticles-slim';
-import { UserData } from './_models/userData';
+import { LoginUserData } from './_models/Data/loginUserData';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +17,7 @@ export class AppComponent implements OnInit {
   }
 
   setCurrentUser(){
-    const user: UserData = JSON.parse(localStorage.getItem('user')!);
+    const user: LoginUserData = JSON.parse(localStorage.getItem('user')!);
     this.accountService.setCurrentUser(user);
   }
 }

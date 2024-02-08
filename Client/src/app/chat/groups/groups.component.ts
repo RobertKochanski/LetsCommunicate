@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlusCircle, faUserEdit, faUserMinus, faUserAltSlash, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
-import { GroupData } from 'src/app/_models/groupData';
+import { GroupData } from 'src/app/_models/Data/groupData';
 import { AccountService } from 'src/app/_services/account.service';
 import { GroupService } from 'src/app/_services/group.service';
 import { InvitationService } from 'src/app/_services/invitation.service';
@@ -16,7 +16,6 @@ import { InvitationService } from 'src/app/_services/invitation.service';
 export class GroupsComponent implements OnInit {
   user = this.accountService.currentUser();
 
-  group: GroupData;
   groups: GroupData[];
 
   groupModel: any = {};
@@ -39,23 +38,11 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadGroups();
-    if(this.route.snapshot.paramMap.get('id') !== null){
-      this.loadGroup();
-    }
-  }
-
-  loadGroup(){
-    this.groupService.getGroup(this.route.snapshot.paramMap.get('id')).subscribe(group => {
-      this.group = group.data;
-    })
   }
 
   loadGroups(){
     this.groupService.getGroups().subscribe(groups => {
       this.groups = groups.data;
-      if(this.route.snapshot.paramMap.get('id') === null){
-        this.group = this.groups.find(x => x.name === "General");
-      }
     })
   }
 

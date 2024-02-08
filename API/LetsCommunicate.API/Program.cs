@@ -1,4 +1,5 @@
 using LetsCommunicate.Domain.Authentication;
+using LetsCommunicate.Domain.Commands.AccountCommand.Handlers;
 using LetsCommunicate.Domain.Queries;
 using LetsCommunicate.Infrastructure;
 using LetsCommunicate.Infrastructure.Entities;
@@ -17,11 +18,15 @@ var tokenKey = builder.Configuration.GetValue<string>("TokenKey");
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
+var cloudinarySettings = builder.Configuration.GetSection("CloudinarySettings");
+
 // Add services to the container.
+builder.Services.Configure<CloudinarySettings>(cloudinarySettings);
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<Seeder>();
 
 builder.Services.AddMediatR(typeof(GetAllUsersQueryHandler));
+builder.Services.AddMediatR(typeof(RegisterCommandHandler));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

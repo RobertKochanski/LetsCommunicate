@@ -1,7 +1,7 @@
 ﻿using LetsCommunicate.Domain.Results;
 using MediatR;
 
-namespace LetsCommunicate.Domain.Commands.UserCommand
+namespace LetsCommunicate.Domain.Commands.AccountCommand
 {
     public class DeleteUserCommand : IRequest<Result>
     {

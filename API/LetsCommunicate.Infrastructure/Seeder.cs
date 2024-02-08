@@ -35,7 +35,11 @@ namespace LetsCommunicate.Infrastructure
             var admin = new AppUser
             {
                 UserName = "admin",
-                Email = "admin@admin.com"
+                Email = "admin@admin.com",
+                Country = "Heaven",
+                City = "Heaven City",
+                Description = "I am the only real one, real one ADMIN of course",
+                RegisterDate = DateTime.Now,
             };
 
             await _userManager.CreateAsync(admin, "zaq1@WSX");

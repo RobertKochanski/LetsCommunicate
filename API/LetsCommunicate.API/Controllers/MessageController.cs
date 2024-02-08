@@ -19,13 +19,6 @@ namespace LetsCommunicate.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{groupId}")]
-        public async Task<IActionResult> GetGroupMessages([FromRoute] Guid groupId)
-        {
-            var query = new GetGroupMessageQuery(groupId);
-            return await _mediator.Send(query).Process();
-        }
-
         [HttpPost("{groupId}")]
         public async Task<IActionResult> CreateMessage(CreateMessageCommand command, Guid groupId)
         {

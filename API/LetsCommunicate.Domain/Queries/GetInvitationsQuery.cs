@@ -8,30 +8,30 @@ using Microsoft.Extensions.Logging;
 
 namespace LetsCommunicate.Domain.Queries
 {
-    public class GetInvitationsCommand : IRequest<Result<List<Invitation>>>
+    public class GetInvitationsQuery : IRequest<Result<List<Invitation>>>
     {
         public string UserEmail { get; set; }
 
-        public GetInvitationsCommand(string userEmail)
+        public GetInvitationsQuery(string userEmail)
         {
             UserEmail = userEmail;
         }
     }
 
-    public class GetInvitationsCommandHandler : IRequestHandler<GetInvitationsCommand, Result<List<Invitation>>>
+    public class GetInvitationsQueryHandler : IRequestHandler<GetInvitationsQuery, Result<List<Invitation>>>
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<GetInvitationsCommandHandler> _logger;
+        private readonly ILogger<GetInvitationsQueryHandler> _logger;
 
-        public GetInvitationsCommandHandler(UserManager<AppUser> userManager, ApplicationDbContext dbContext, ILogger<GetInvitationsCommandHandler> logger)
+        public GetInvitationsQueryHandler(UserManager<AppUser> userManager, ApplicationDbContext dbContext, ILogger<GetInvitationsQueryHandler> logger)
         {
             _userManager = userManager;
             _dbContext = dbContext;
             _logger = logger;
         }
 
-        public async Task<Result<List<Invitation>>> Handle(GetInvitationsCommand request, CancellationToken cancellationToken)
+        public async Task<Result<List<Invitation>>> Handle(GetInvitationsQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 

@@ -12,6 +12,7 @@ namespace LetsCommunicate.Infrastructure
         {
         }
 
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Invitation> Invitations { get; set; }

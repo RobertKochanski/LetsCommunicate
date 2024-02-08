@@ -3,10 +3,10 @@ using LetsCommunicate.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using LetsCommunicate.Infrastructure.Models;
 using LetsCommunicate.Domain.Results;
+using LetsCommunicate.Infrastructure.Models.User;
 
-namespace LetsCommunicate.Domain.Commands.UserCommand.Handlers
+namespace LetsCommunicate.Domain.Commands.AccountCommand.Handlers
 {
     public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result>
     {
@@ -36,7 +36,7 @@ namespace LetsCommunicate.Domain.Commands.UserCommand.Handlers
             if (!deleteResult.Succeeded)
             {
                 _logger.LogError(string.Join(" ", $"[{DateTime.Now}]" + deleteResult.Errors.Select(x => x.Description)));
-                return Result.BadRequest<UserResponse>(deleteResult.Errors.Select(x => x.Description).ToList());
+                return Result.BadRequest<LoginUserResponse>(deleteResult.Errors.Select(x => x.Description).ToList());
             }
 
             await _dbContext.SaveChangesAsync();

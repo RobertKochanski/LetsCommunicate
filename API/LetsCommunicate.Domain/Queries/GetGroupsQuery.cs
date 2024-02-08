@@ -2,6 +2,7 @@
 using LetsCommunicate.Infrastructure;
 using LetsCommunicate.Infrastructure.Entities;
 using LetsCommunicate.Infrastructure.Models;
+using LetsCommunicate.Infrastructure.Models.User;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,17 +46,21 @@ namespace LetsCommunicate.Domain.Queries
             }
 
             var groups = _dbContext.Groups
+                .Include(x => x.Messages)
+                    .ThenInclude(x => x.Sender)
+                        .ThenInclude(x => x.Photo)
                 .Where(x => x.Members.Contains(user))
                 .Select(x => new GroupResponse()
                 {
                     Id = x.Id,
                     Name = x.Name,
                     OwnerEmail = x.OwnerEmail,
-                    Users = x.Members.Select(x => new UserResponse()
+                    Users = x.Members.Select(x => new LoginUserResponse()
                     {
                         Id = x.Id,
                         Email = x.Email,
                         UserName = x.UserName,
+                        PhotoUrl = x.Photo != null ? x.Photo.Url : null,
                         Token = null
                     }).ToList(),
                     Messages = x.Messages.Select(x => new MessageResponse()
@@ -63,11 +68,12 @@ namespace LetsCommunicate.Domain.Queries
                         Content = x.Content,
                         GroupId = x.GroupId,
                         SenderId = x.SenderId,
-                        Sender = new UserResponse()
+                        Sender = new LoginUserResponse()
                         {
                             Id = x.Sender.Id,
                             Email = x.Sender.Email,
                             UserName = x.Sender.UserName,
+                            PhotoUrl = x.Sender.Photo != null ? x.Sender.Photo.Url : null,
                             Token = null
                         },
                         MessageSent = x.MessageSent

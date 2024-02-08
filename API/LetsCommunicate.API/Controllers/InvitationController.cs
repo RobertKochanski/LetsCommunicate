@@ -30,7 +30,7 @@ namespace LetsCommunicate.API.Controllers
         [HttpGet]
         public async Task<IActionResult> getUserInvitations()
         {
-            var query = new GetInvitationsCommand(User.GetUserEmail());
+            var query = new GetInvitationsQuery(User.GetUserEmail());
 
             return await _mediator.Send(query).Process();
         }

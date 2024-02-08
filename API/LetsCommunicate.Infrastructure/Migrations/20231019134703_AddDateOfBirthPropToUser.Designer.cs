@@ -4,6 +4,7 @@ using LetsCommunicate.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsCommunicate.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231019134703_AddDateOfBirthPropToUser")]
+    partial class AddDateOfBirthPropToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,6 +121,9 @@ namespace LetsCommunicate.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
@@ -253,30 +258,6 @@ namespace LetsCommunicate.Infrastructure.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("Permissions");
-                });
-
-            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Photo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
-
-                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -440,17 +421,6 @@ namespace LetsCommunicate.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.Photo", b =>
-                {
-                    b.HasOne("LetsCommunicate.Infrastructure.Entities.AppUser", "AppUser")
-                        .WithOne("Photo")
-                        .HasForeignKey("LetsCommunicate.Infrastructure.Entities.Photo", "AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("LetsCommunicate.Infrastructure.Entities.AppRole", null)
@@ -494,8 +464,6 @@ namespace LetsCommunicate.Infrastructure.Migrations
 
             modelBuilder.Entity("LetsCommunicate.Infrastructure.Entities.AppUser", b =>
                 {
-                    b.Navigation("Photo");
-
                     b.Navigation("UserRoles");
                 });
 
